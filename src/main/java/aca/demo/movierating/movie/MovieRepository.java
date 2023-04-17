@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.HexFormat.of;
+
 @Component
 @Slf4j
 public class MovieRepository {
@@ -19,8 +20,13 @@ public class MovieRepository {
         log.debug("method findByTitle - {}" +
                 "running");
         List<Movie> movieList = movies.stream().distinct().filter(movie1 -> movie1.getTitle().equals(title)).collect(Collectors.toList());
-        Optional<Movie> optionalMovie = Optional.of(movieList.get(0));
-        return optionalMovie.isEmpty() ? Optional.empty() : optionalMovie;
+        Optional<Movie> optionalMovie;
+        if (movieList.isEmpty()) {
+            return Optional.empty();
+        } else {
+            optionalMovie = Optional.of(movieList.get(0));
+        }
+        return optionalMovie;
     }
 
     public List<Movie> findByGenre(Genre genre) {
@@ -32,7 +38,16 @@ public class MovieRepository {
     public void save(CreateMovie createMovie) {
         log.debug("method save Movie - {}" +
                 "running");
-        Movie movie = new Movie(createMovie);
-        movies.add(movie);
+        if (!findByTitle(createMovie.getTitle()).isEmpty()) {
+            throw new IllegalArgumentException("Please rename movie name");
+        } else {
+            Movie movie = new Movie(createMovie);
+            movies.add(movie);
+        }
+    }
+
+
+    public List<Movie> getMovies() {
+        return movies;
     }
 }

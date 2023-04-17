@@ -24,7 +24,8 @@ public class MovieRatingApplication {
         movieService.create(new CreateMovie("American Beauty", Genre.DRAMA));
         log.debug("movies with genre DRAMA: {}" + movieService.search(Genre.DRAMA));
         log.debug("movies with genre ROMANCE: {}" + movieService.search(Genre.ROMANCE));
-        movieService.create(new CreateMovie("Forrest Gump",Genre.COMEDY));
+        log.debug("AAAAAAAA");
+
 
 
 

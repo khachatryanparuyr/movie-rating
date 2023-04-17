@@ -2,12 +2,14 @@ package aca.demo.movierating.endpoint;
 
 import aca.demo.movierating.movie.CreateMovie;
 import aca.demo.movierating.movie.Genre;
+import aca.demo.movierating.movie.MovieRepository;
 import aca.demo.movierating.movie.MovieService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -18,12 +20,13 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class MovieController {
     private final MovieService movieService;
+    private final MovieRepository movieRepository;
 
 
     @PostMapping("movies")
     public void create(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Genre genre = Genre.valueOf(request.getParameter("genre"));
         String title = request.getParameter("title");
+        Genre genre = Genre.valueOf(title);
         log.info("Genre is -" + genre + " ,   title is -" + title);
         movieService.create(new CreateMovie(title, genre));
         response.setStatus(200);
@@ -43,5 +46,6 @@ public class MovieController {
 
 
     }
+
 
 }

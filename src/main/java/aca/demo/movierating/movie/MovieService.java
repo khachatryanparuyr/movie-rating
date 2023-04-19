@@ -20,4 +20,8 @@ public class MovieService {
         //Exception check in the MoveRepository save method
         movieRepository.save(createMovie);
     }
+
+    public MovieRepository getMovieRepository() {
+        return movieRepository;
+    }
 }

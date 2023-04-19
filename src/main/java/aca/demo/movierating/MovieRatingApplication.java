@@ -19,7 +19,7 @@ public class MovieRatingApplication {
 
         var movieService = applicationContext.getBean(MovieService.class);
 
-        movieService.create(new CreateMovie("Forrest Gump", Genre.DRAMA));
+        movieService.create(new CreateMovie("Forrest", Genre.DRAMA));
         movieService.create(new CreateMovie("Horrible Bosses", Genre.COMEDY));
         movieService.create(new CreateMovie("American Beauty", Genre.DRAMA));
         log.debug("movies with genre DRAMA: {}" + movieService.search(Genre.DRAMA));

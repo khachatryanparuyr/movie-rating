@@ -46,6 +46,13 @@ public class MovieRepository {
         }
     }
 
+    public void deleteByTitle(String title){
+        Movie movie = findByTitle(title).get();
+        movies.removeIf(movie1 -> movie1.equals(movie));
+
+    }
+
+
 
     public List<Movie> getMovies() {
         return movies;

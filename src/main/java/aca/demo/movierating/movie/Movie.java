@@ -35,4 +35,13 @@ public class Movie {
                 , this.title + " " + this.genre + " "
                         + this.director + " " + this.rating + " " + this.releasedAt);
     }
+
+    private void update(UpdateMovie updateMovie) {
+      title = updateMovie.getTitle();
+      genre = updateMovie.getGenre();
+      director = updateMovie.getDirector();
+      releasedAt = updateMovie.getReleasedAt();
+      rating = updateMovie.getRating();
+    }
+
 }

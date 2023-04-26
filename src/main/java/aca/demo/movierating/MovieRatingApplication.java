@@ -7,7 +7,9 @@ import aca.demo.movierating.movie.MovieService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootApplication
@@ -18,13 +20,13 @@ public class MovieRatingApplication {
        var applicationContext = SpringApplication.run(MovieRatingApplication.class, args);
 
         var movieService = applicationContext.getBean(MovieService.class);
+        LocalDate localDate = LocalDate.of(2020,4,15);
+        LocalDate localDate1 = LocalDate.of(2023,4,15);
+        LocalDate localDate2 = LocalDate.of(2021,4,15);
 
-        movieService.create(new CreateMovie("Forrest", Genre.DRAMA));
-        movieService.create(new CreateMovie("Horrible Bosses", Genre.COMEDY));
-        movieService.create(new CreateMovie("American Beauty", Genre.DRAMA));
-        log.debug("movies with genre DRAMA: {}" + movieService.search(Genre.DRAMA));
-        log.debug("movies with genre ROMANCE: {}" + movieService.search(Genre.ROMANCE));
-        log.debug("AAAAAAAA");
+        movieService.create(CreateMovie.builder().id(1L).title("Forrest Gump").genre(Genre.DRAMA).rating(4.2).director("Arman").releasedAt(localDate).build());
+        movieService.create(CreateMovie.builder().id(2L).title("Lost").genre(Genre.DRAMA).rating(4.5).director("Poxos").releasedAt(localDate1).build());
+        movieService.create(CreateMovie.builder().id(3L).title("Lost 2").genre(Genre.DRAMA).rating(4.3).director("Petros").releasedAt(localDate2).build());
 
 
 

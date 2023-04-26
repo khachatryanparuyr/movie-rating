@@ -26,6 +26,7 @@ public class Movie {
 
 
     public Movie(CreateMovie createMovie) {
+        this.id = createMovie.getId();
         this.title = createMovie.getTitle();
         this.genre = createMovie.getGenre();
         this.director = createMovie.getDirector();
@@ -36,7 +37,7 @@ public class Movie {
                         + this.director + " " + this.rating + " " + this.releasedAt);
     }
 
-    private void update(UpdateMovie updateMovie) {
+    public void update(UpdateMovie updateMovie) {
       title = updateMovie.getTitle();
       genre = updateMovie.getGenre();
       director = updateMovie.getDirector();

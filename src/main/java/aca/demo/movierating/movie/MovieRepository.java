@@ -3,6 +3,7 @@ package aca.demo.movierating.movie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,17 +17,40 @@ import static java.util.HexFormat.of;
 public class MovieRepository {
     private List<Movie> movies = new ArrayList<>();
 
-    public Optional<Movie> findByTitle(String title) {
-        log.debug("method findByTitle - {}" +
-                "running");
-        List<Movie> movieList = movies.stream().distinct().filter(movie1 -> movie1.getTitle().equals(title)).collect(Collectors.toList());
-        Optional<Movie> optionalMovie;
-        if (movieList.isEmpty()) {
-            return Optional.empty();
-        } else {
-            optionalMovie = Optional.of(movieList.get(0));
+
+    public Optional<Movie> findById(Long id) {
+        Movie movieById = movies.stream().filter(movie -> movie.getId().equals(id)).distinct().findFirst().orElse(null);
+        Optional<Movie> optionalMovie = Optional.of(movieById);
+        return optionalMovie.isEmpty() ? Optional.empty() : optionalMovie;
+    }
+
+    public void persist(Movie movie) {
+        movies.add(movie);
+    }
+
+    public void delete(Movie movie) {
+        movies.removeIf(movie1 -> movie1.getId().equals(movie.getId()));
+    }
+
+    List<Movie> search(Genre genre, String title, LocalDate releasedBefore, LocalDate releasedAfter) {
+        if (genre != null) {
+            return movies.stream().filter(movie -> movie.getGenre().equals(genre)).collect(Collectors.toList());
+        } else if (title != null) {
+            return movies.stream().filter(movie -> movie.getTitle().equals(title)).collect(Collectors.toList());
+        } else if (releasedAfter != null && releasedBefore != null) {
+            return movies.stream().filter(movie -> movie.getReleasedAt().isAfter(releasedAfter) && movie.getReleasedAt().isBefore(releasedBefore)).
+                    collect(Collectors.toList());
         }
-        return optionalMovie;
+
+        return movies;
+    }
+
+    public Optional<Movie> findByTitle(String title) {
+        log.debug("method findByTitle - {}", title +
+                " running");
+        Movie movieByTitle = movies.stream().distinct().filter(movie1 -> movie1.getTitle().equals(title)).findFirst().orElse(null);
+        Optional<Movie> optionalMovie = Optional.of(movieByTitle);
+        return optionalMovie.isEmpty() ? Optional.empty() : optionalMovie;
     }
 
     public List<Movie> findByGenre(Genre genre) {
@@ -46,12 +70,11 @@ public class MovieRepository {
         }
     }
 
-    public void deleteByTitle(String title){
+    public void deleteByTitle(String title) {
         Movie movie = findByTitle(title).get();
         movies.removeIf(movie1 -> movie1.equals(movie));
 
     }
-
 
 
     public List<Movie> getMovies() {
